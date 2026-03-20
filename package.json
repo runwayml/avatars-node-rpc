@@ -24,7 +24,9 @@
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "example:trivia": "tsx examples/trivia.ts",
+    "example:multi-tool": "tsx examples/multi-tool.ts"
   },
   "engines": {
     "node": ">=18"
@@ -33,7 +35,9 @@
     "@livekit/rtc-node": "^0.13.24"
   },
   "devDependencies": {
+    "@types/node": "^25.5.0",
     "tsup": "^8.5.1",
+    "tsx": "^4.21.0",
     "typescript": "^5.9.3"
   },
   "license": "MIT"

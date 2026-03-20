@@ -40,7 +40,8 @@ export async function createRpcHandler(
 
       let args: Record<string, unknown>;
       try {
-        args = JSON.parse(data.payload);
+        const parsed = JSON.parse(data.payload);
+        args = parsed.args ?? parsed;
       } catch {
         throw new RpcError(
           RpcError.ErrorCode.APPLICATION_ERROR,
