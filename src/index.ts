@@ -1,3 +1,4 @@
+export { createRpcHandler } from './handler.js';
 export type {
   CreateRpcHandlerOptions,
   LiveKitCredentials,
