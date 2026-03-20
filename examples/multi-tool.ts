@@ -25,7 +25,7 @@ import { createRpcHandler } from '../src/index.js';
 
 const API_KEY = requireEnv('RUNWAYML_API_SECRET');
 const AVATAR_ID = requireEnv('RUNWAY_AVATAR_ID');
-const BASE_URL = process.env.RUNWAY_BASE_URL ?? 'https://api.dev-stage.runwayml.com';
+const BASE_URL = process.env.RUNWAY_BASE_URL ?? 'https://api.dev.runwayml.com';
 
 const API_VERSION = '2024-11-06';
 const POLL_INTERVAL_MS = 2_000;
