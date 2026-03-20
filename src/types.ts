@@ -25,6 +25,8 @@ export interface CreateRpcHandlerOptions {
   onDisconnected?: () => void;
   /** Called on errors */
   onError?: (error: Error) => void;
+  /** Log all data channel messages for debugging */
+  debug?: boolean;
 }
 
 export interface RpcHandler {

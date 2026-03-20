@@ -14,6 +14,7 @@ export async function connectBackend(
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${apiKey}`,
+      'X-Runway-Version': '2024-11-06',
     },
   });
 

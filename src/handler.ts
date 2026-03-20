@@ -1,6 +1,6 @@
-import { Room, RoomEvent } from '@livekit/rtc-node';
+import { Room, RoomEvent, RpcError } from '@livekit/rtc-node';
+import type { RpcInvocationData } from '@livekit/rtc-node';
 import { connectBackend } from './api.js';
-import { parseToolRequest, serializeToolResponse } from './protocol.js';
 import type { CreateRpcHandlerOptions, RpcHandler } from './types.js';
 
 export async function createRpcHandler(
@@ -14,13 +14,6 @@ export async function createRpcHandler(
 
   const room = new Room();
 
-  room.on(RoomEvent.DataReceived, (payload: Uint8Array) => {
-    const request = parseToolRequest(payload);
-    if (!request) return;
-
-    void handleToolRequest(request.request_id, request.tool_name, request.data);
-  });
-
   room.on(RoomEvent.Disconnected, () => {
     onDisconnected?.();
   });
@@ -32,41 +25,53 @@ export async function createRpcHandler(
   }
   const localParticipant = room.localParticipant;
 
-  onConnected?.();
-
-  async function handleToolRequest(
-    requestId: string,
-    toolName: string,
-    args: Record<string, unknown>,
-  ) {
-    let responseData: Record<string, unknown>;
-
-    try {
-      const handler = tools[toolName];
-      if (!handler) {
-        responseData = { error: `Unknown tool: ${toolName}` };
-      } else {
-        responseData = await handler(args);
+  for (const toolName of Object.keys(tools)) {
+    localParticipant.registerRpcMethod(toolName, async (data: RpcInvocationData) => {
+      if (!data.callerIdentity.startsWith('worker:')) {
+        throw new RpcError(
+          RpcError.ErrorCode.APPLICATION_ERROR,
+          `Unauthorized caller: ${data.callerIdentity}`,
+        );
       }
-    } catch (err) {
-      const message = err instanceof Error ? err.message : String(err);
-      responseData = { error: message };
-      onError?.(err instanceof Error ? err : new Error(message));
-    }
 
-    try {
-      await localParticipant.publishData(
-        serializeToolResponse(requestId, responseData),
-        { reliable: true },
-      );
-    } catch (err) {
-      const publishError = err instanceof Error ? err : new Error(String(err));
-      onError?.(publishError);
-    }
+      if (options.debug) {
+        console.log(`[avatars-node] RPC "${toolName}" from ${data.callerIdentity}:`, data.payload);
+      }
+
+      let args: Record<string, unknown>;
+      try {
+        args = JSON.parse(data.payload);
+      } catch {
+        throw new RpcError(
+          RpcError.ErrorCode.APPLICATION_ERROR,
+          'Invalid JSON payload',
+        );
+      }
+
+      try {
+        const result = await tools[toolName](args);
+        return JSON.stringify(result);
+      } catch (err) {
+        const message = err instanceof Error ? err.message : String(err);
+        onError?.(err instanceof Error ? err : new Error(message));
+        throw new RpcError(RpcError.ErrorCode.APPLICATION_ERROR, message);
+      }
+    });
   }
+
+  if (options.debug) {
+    console.log(`[avatars-node] Local identity: ${localParticipant.identity}`);
+    console.log(`[avatars-node] Registered RPC methods: ${Object.keys(tools).join(', ')}`);
+    console.log(`[avatars-node] Remote participants: ${[...room.remoteParticipants.keys()].join(', ') || '(none)'}`);
+  }
+
+  onConnected?.();
 
   return {
     async close() {
+      for (const toolName of Object.keys(tools)) {
+        localParticipant.unregisterRpcMethod(toolName);
+      }
       await room.disconnect();
     },
     get connected() {
