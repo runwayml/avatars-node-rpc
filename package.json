@@ -1,5 +1,5 @@
 {
-  "name": "@runwayml/avatars-node",
+  "name": "@runwayml/avatars-node-rpc",
   "version": "0.0.1",
   "description": "Node.js handler for backend RPC tool calls in Runway avatar sessions",
   "type": "module",

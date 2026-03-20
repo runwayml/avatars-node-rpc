@@ -35,7 +35,7 @@ export async function createRpcHandler(
       }
 
       if (options.debug) {
-        console.log(`[avatars-node] RPC "${toolName}" from ${data.callerIdentity}:`, data.payload);
+        console.log(`[avatars-node-rpc] RPC "${toolName}" from ${data.callerIdentity}:`, data.payload);
       }
 
       let args: Record<string, unknown>;
@@ -61,9 +61,9 @@ export async function createRpcHandler(
   }
 
   if (options.debug) {
-    console.log(`[avatars-node] Local identity: ${localParticipant.identity}`);
-    console.log(`[avatars-node] Registered RPC methods: ${Object.keys(tools).join(', ')}`);
-    console.log(`[avatars-node] Remote participants: ${[...room.remoteParticipants.keys()].join(', ') || '(none)'}`);
+    console.log(`[avatars-node-rpc] Local identity: ${localParticipant.identity}`);
+    console.log(`[avatars-node-rpc] Registered RPC methods: ${Object.keys(tools).join(', ')}`);
+    console.log(`[avatars-node-rpc] Remote participants: ${[...room.remoteParticipants.keys()].join(', ') || '(none)'}`);
   }
 
   onConnected?.();
