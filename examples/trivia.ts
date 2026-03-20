@@ -97,7 +97,7 @@ async function createSession(): Promise<string> {
           parameters: [
             { name: 'category', type: 'string', description: 'Question category' },
           ],
-          timeoutSeconds: 10,
+          timeoutSeconds: 8,
         },
       ],
     }),

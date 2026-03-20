@@ -128,7 +128,7 @@ const TOOLS_CONFIG = [
     parameters: [
       { name: 'city', type: 'string', description: 'The city name' },
     ],
-    timeoutSeconds: 10,
+    timeoutSeconds: 8,
   },
   {
     type: 'backend_rpc' as const,
@@ -139,7 +139,7 @@ const TOOLS_CONFIG = [
       { name: 'from', type: 'string', description: 'Source currency code (e.g. USD)' },
       { name: 'to', type: 'string', description: 'Target currency code (e.g. EUR)' },
     ],
-    timeoutSeconds: 10,
+    timeoutSeconds: 8,
   },
   {
     type: 'backend_rpc' as const,
@@ -148,7 +148,7 @@ const TOOLS_CONFIG = [
     parameters: [
       { name: 'word', type: 'string', description: 'The word to define' },
     ],
-    timeoutSeconds: 10,
+    timeoutSeconds: 8,
   },
 ];
 
