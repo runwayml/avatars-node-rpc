@@ -20,7 +20,8 @@
   "types": "./dist/index.d.ts",
   "files": [
     "dist",
-    "LICENSE"
+    "LICENSE",
+    "NOTICES"
   ],
   "repository": {
     "type": "git",
