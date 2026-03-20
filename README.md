@@ -4,14 +4,6 @@ Node.js handler for backend RPC tool calls in [Runway](https://runwayml.com) ava
 
 This package joins a LiveKit room as a hidden participant and dispatches incoming tool call requests from the avatar worker to your handler functions via LiveKit RPC.
 
-## Installation
-
-```bash
-npm install @runwayml/avatars-node-rpc
-```
-
-Requires Node.js 18 or later.
-
 ## Usage
 
 ### With API key and session ID
