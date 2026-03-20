@@ -74,7 +74,8 @@ Connects to a LiveKit room and starts handling tool call requests.
 | `tools` | `Record<string, ToolHandler>` | Tool handler functions keyed by tool name. |
 | `onConnected` | `() => void` | Called when connected to the LiveKit room. |
 | `onDisconnected` | `() => void` | Called when disconnected. |
-| `onError` | `(error: Error) => void` | Called on errors (handler exceptions, publish failures). |
+| `onError` | `(error: Error) => void` | Called on handler errors. |
+| `debug` | `boolean` | Log RPC method calls for debugging. |
 
 **`ToolHandler`:** `(args: Record<string, unknown>) => Promise<Record<string, unknown>>`
 

@@ -235,7 +235,7 @@ function buildFrontendHtml(creds: { url: string; token: string; roomName: string
 
   <script src="https://cdn.jsdelivr.net/npm/livekit-client@2/dist/livekit-client.umd.min.js"></script>
   <script>
-    const CREDS = ${JSON.stringify(creds)};
+    const CREDS = ${JSON.stringify(creds).replace(/</g, '\\u003c')};
     const statusEl  = document.getElementById('status');
     const videoEl   = document.getElementById('video-container');
     const micBtn    = document.getElementById('mic-btn');

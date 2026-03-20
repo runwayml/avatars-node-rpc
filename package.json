@@ -19,11 +19,26 @@
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "files": [
-    "dist"
+    "dist",
+    "LICENSE"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/runwayml/avatars-node-rpc.git"
+  },
+  "keywords": [
+    "runway",
+    "avatars",
+    "rpc",
+    "realtime"
   ],
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",
+    "lint": "biome lint src/",
+    "lint:fix": "biome lint --write src/",
+    "format": "biome format --write src/",
+    "check": "biome check src/",
     "typecheck": "tsc --noEmit",
     "example:trivia": "tsx examples/trivia.ts",
     "example:multi-tool": "tsx examples/multi-tool.ts"
@@ -35,6 +50,7 @@
     "@livekit/rtc-node": "^0.13.24"
   },
   "devDependencies": {
+    "@biomejs/biome": "^2.4.8",
     "@types/node": "^25.5.0",
     "tsup": "^8.5.1",
     "tsx": "^4.21.0",
