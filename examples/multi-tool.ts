@@ -321,6 +321,18 @@ function buildFrontendHtml(creds: { url: string; token: string; roomName: string
     #mic-btn:hover { background: #2563eb; }
     #mic-btn.active { background: #dc2626; }
     #mic-btn:disabled { opacity: 0.4; cursor: default; }
+    #controls { display: flex; gap: 12px; }
+    #disconnect-btn {
+      padding: 10px 28px;
+      font-size: 14px;
+      border: none;
+      border-radius: 6px;
+      background: #27272a;
+      color: #a1a1aa;
+      cursor: pointer;
+    }
+    #disconnect-btn:hover { background: #3f3f46; }
+    #disconnect-btn:disabled { opacity: 0.4; cursor: default; }
     #transcript {
       width: 640px;
       max-width: 100%;
@@ -341,7 +353,10 @@ function buildFrontendHtml(creds: { url: string; token: string; roomName: string
   <h1>Runway Avatar — Multi-Tool Example</h1>
   <div id="status">Connecting…</div>
   <div id="video-container"></div>
-  <button id="mic-btn" disabled>Enable Microphone</button>
+  <div id="controls">
+    <button id="mic-btn" disabled>Enable Microphone</button>
+    <button id="disconnect-btn" disabled>Disconnect</button>
+  </div>
   <div id="transcript"></div>
 
   <script src="https://cdn.jsdelivr.net/npm/livekit-client@2/dist/livekit-client.umd.min.js"></script>
@@ -350,6 +365,7 @@ function buildFrontendHtml(creds: { url: string; token: string; roomName: string
     const statusEl   = document.getElementById('status');
     const videoEl    = document.getElementById('video-container');
     const micBtn     = document.getElementById('mic-btn');
+    const dcBtn      = document.getElementById('disconnect-btn');
     const transcript = document.getElementById('transcript');
     let micOn = false;
 
@@ -393,6 +409,7 @@ function buildFrontendHtml(creds: { url: string; token: string; roomName: string
         statusEl.textContent = 'Disconnected';
         statusEl.className = 'error';
         micBtn.disabled = true;
+        dcBtn.disabled = true;
         append('Session ended.', 't-system');
       });
 
@@ -401,6 +418,7 @@ function buildFrontendHtml(creds: { url: string; token: string; roomName: string
         statusEl.textContent = 'Connected';
         statusEl.className = 'connected';
         micBtn.disabled = false;
+        dcBtn.disabled = false;
         append('Connected — try asking about weather, currency, or word definitions.', 't-system');
       } catch (err) {
         statusEl.textContent = 'Failed: ' + err.message;
@@ -413,6 +431,10 @@ function buildFrontendHtml(creds: { url: string; token: string; roomName: string
         await room.localParticipant.setMicrophoneEnabled(micOn);
         micBtn.textContent = micOn ? 'Mute Microphone' : 'Enable Microphone';
         micBtn.className = micOn ? 'active' : '';
+      };
+
+      dcBtn.onclick = async () => {
+        await room.disconnect();
       };
     })();
   </script>
